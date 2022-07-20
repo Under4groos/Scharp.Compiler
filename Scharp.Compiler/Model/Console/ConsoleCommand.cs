@@ -15,34 +15,45 @@ namespace Scharp.Compiler.Model.Console
         {
 
         }
+        public void RunCommand(string command)
+        {
+            
+            if (string.IsNullOrEmpty(command) && command == string.Empty)
+                return;
+            foreach (var item in this)
+            {
+                if (item.ToLower)
+                    command = command.ToLower();
+                if (item.IsRegex)
+                {
+                    if (Regex.IsMatch(command, item.command))
+                    {
+                        if (item.Event != null)
+                            item.Event(Regex.Match(command, item.command).Value);
+                        break;
+                    }
+
+                }
+                else
+                {
+                    if (command == item.command)
+                    {
+                        if (item.Event != null)
+                            item.Event(command);
+                        break;
+                    }
+
+
+                }
+
+            }
+        }
         public void Initialize()
         {
-            string data_ = "";
+           
             while (true)
             {
-                data_ = System.Console.ReadLine().Trim();
-                if (string.IsNullOrEmpty(data_) && data_ == string.Empty)
-                    continue;
-                foreach (var item in this)
-                {
-                    if(item.ToLower)
-                        data_ = data_.ToLower();
-                    if (item.IsRegex)
-                    {
-                        if(Regex.IsMatch(data_,item.command))
-                        {
-                            if (item.Event != null)
-                                item.Event(data_);
-                            continue;
-                        }
-                        if (item.Event != null)
-                            item.Event(data_);
-                        continue;
-                    }
-                    if(data_ == item.command)
-                        if (item.Event != null)
-                            item.Event(data_);
-                }
+                RunCommand(System.Console.ReadLine().Trim());
             }
         }
     }

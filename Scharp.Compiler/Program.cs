@@ -70,17 +70,29 @@ namespace Scharp.Compiler
                 ToLower = true,
             });
 
+            consoleCommand.Add(new Command((o) =>
+            {
+
+                Console.WriteLine(o);
+                 
+            })
+            {
+                IsRegex = true,
+                command = "^run ?\"[\\w\\W]+?\"",
+                
+            });
 
 
+            //consoleCommand.RunCommand("run \"asdasd\"");
 
             consoleCommand.Initialize();
 
 
-           
 
 
 
 
+            
         }
     }
 }
