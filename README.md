@@ -5,7 +5,7 @@ Say /help
 Say create new
 Say run <path to cs file>
 ```
-```charp
+```Charp
 using System;
 Console.WriteLine("Start");
 @include "https://raw.githubusercontent.com/Under4groos/Scharp.TestCode/main/test.cs";
