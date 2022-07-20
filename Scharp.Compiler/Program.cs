@@ -7,10 +7,10 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Process = Scharp.Compiler.Model.Process;
-using System.Threading.Tasks;
-using System.Threading.Tasks;
+ 
 namespace Scharp.Compiler
 {
     
@@ -60,10 +60,14 @@ namespace Scharp.Compiler
 
 
                 Console.WriteLine($"cd {dataApp.StartupLocationDir}; dotnet new console");
-                Process.Run("cmd", new string[] { $"cd {dataApp.StartupLocationDir}", "dotnet new console" }, (s) =>
+                Process.Run("cmd", new string[] { $"cd {dataApp.StartupLocationDir}", "dotnet new console"}, (s) =>
                 {
-                    Console.WriteLine(s);
+                    //Console.WriteLine(s);
+                } , () =>
+                {
+                    Console.WriteLine("End.");
                 });
+                
             })
             {
                 command = "create new",
@@ -72,9 +76,26 @@ namespace Scharp.Compiler
 
             consoleCommand.Add(new Command((o) =>
             {
+                string path_cs_file = Regex.Match(o, "\"[\\w\\W]+?\"").Value.Replace("\"" , "");
+                if (!File.Exists(path_cs_file))
+                    return;          
+                string path_main_cs_ = Path.Combine(dataApp.StartupLocationDir, "Program.cs");
+                
 
-                Console.WriteLine(o);
-                 
+                if (!File.Exists(path_main_cs_))
+                    return;
+
+
+
+
+                Console.WriteLine(path_main_cs_);
+
+
+
+
+
+
+
             })
             {
                 IsRegex = true,
@@ -83,7 +104,7 @@ namespace Scharp.Compiler
             });
 
 
-            //consoleCommand.RunCommand("run \"asdasd\"");
+            consoleCommand.RunCommand($"run \"{@"C:\Users\Maks\Desktop\main.cs"}\"");
 
             consoleCommand.Initialize();
 
