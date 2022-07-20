@@ -20,7 +20,7 @@ namespace Scharp.Compiler.Model.Console
             string data_ = "";
             while (true)
             {
-                data_ = System.Console.ReadLine();
+                data_ = System.Console.ReadLine().Trim();
                 if (string.IsNullOrEmpty(data_) && data_ == string.Empty)
                     continue;
                 foreach (var item in this)

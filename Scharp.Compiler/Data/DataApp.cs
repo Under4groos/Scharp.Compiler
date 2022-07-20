@@ -10,6 +10,10 @@ namespace Scharp.Compiler.Data
     public class DataApp
     {
         public string LocalPath = "Data";
+        public string StartupLocationDir
+        {
+            get;private set;
+        } = Path.Combine(new FileInfo(System.Reflection.Assembly.GetExecutingAssembly().Location).DirectoryName ,"Data");
         public void Create()
         {
             if (!Directory.Exists(LocalPath))
