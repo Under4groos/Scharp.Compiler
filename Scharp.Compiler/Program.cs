@@ -1,5 +1,6 @@
 ﻿using Scharp.Compiler.Data;
 using Scharp.Compiler.Model;
+using Scharp.Compiler.Model.Compiler;
 using Scharp.Compiler.Model.Console;
 using System;
 using System.Collections.Generic;
@@ -18,6 +19,7 @@ namespace Scharp.Compiler
     {
         static ConsoleCommand consoleCommand = new ConsoleCommand();
         static DataApp dataApp = new DataApp();
+        static Model.Compiler.Compiler compiler = new Model.Compiler.Compiler();
         static void Main(string[] args)
         {
             
@@ -80,11 +82,18 @@ namespace Scharp.Compiler
                 if (!File.Exists(path_cs_file))
                     return;          
                 string path_main_cs_ = Path.Combine(dataApp.StartupLocationDir, "Program.cs");
-                
 
                 if (!File.Exists(path_main_cs_))
                     return;
 
+
+                compiler.Open(path_cs_file);
+                compiler.Rebuild();
+          //      Console.WriteLine(compiler.Content);
+                //foreach (var item in Regex.Matches(path_cs_file ))
+                //{
+
+                //}
 
 
 
