@@ -10,6 +10,7 @@ namespace Scharp.Compiler.Model.Compiler
 {
     public class Compiler : BaseCompiler
     {
+        public Action<string> EventError;
         Dictionary<string, string> Patterns = new Dictionary<string, string>()
         {
             { "include", "@include[\\s]+((\"\")|(\\\"[\\w\\W]+?\\\"))?;" },
@@ -21,7 +22,11 @@ namespace Scharp.Compiler.Model.Compiler
         {
 
         }
-
+        public void LogError(string str_ = null)
+        {
+            if (EventError != null)
+                EventError(str_);
+        }
         void Clearner()
         {
             if (this.Content == null)
@@ -50,11 +55,37 @@ namespace Scharp.Compiler.Model.Compiler
                 data_ = Regex.Match(item.Value, Patterns["url_adn_path"]).Value.Replace("\"", "").Trim();
                 if(Regex.IsMatch(data_, Patterns["url"]))
                 {
+                    try
+                    {
+                        string Dstring = new Model.WebClient.WebClient().DownloadString(data_);
 
+                        this.Content = this.Content.Replace(item.Value, Dstring);
+                    }
+                    catch (Exception e)
+                    {
 
-                }else if (File.Exists(data_))
+                        this.Content = this.Content.Replace(item.Value, "");
+                        LogError(e.Message);
+                    }
+                   
+                   
+                }
+                else if (File.Exists(data_))
                 {
+                    try
+                    {
+                        string str_code = File.ReadAllText(data_);
+                        if (str_code != "" || str_code != null)
+                        {
+                            this.Content = this.Content.Replace(item.Value, str_code + "\n");
+                        }
+                    }
+                    catch (Exception e)
+                    {
 
+                        this.Content = this.Content.Replace(item.Value, "");
+                        LogError(e.Message);
+                    }
                 }
 
                

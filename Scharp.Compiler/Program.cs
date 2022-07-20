@@ -37,38 +37,13 @@ namespace Scharp.Compiler
             {
                 command = "dotnet ver",  
             });
-
-            consoleCommand.Add(new Command((o) =>
-            {
-
-                Process.Run("cmd", "ping google.com", (s) =>
-                {
-                    Console.WriteLine(s);
-                });
-            })
-            {
-                command = "ping",
-            });
-
-
-
             consoleCommand.Add(new Command((o) =>
             {
                
-
                 Directory.Delete(dataApp.StartupLocationDir, true);
                 dataApp.Create();
-
-
-
                 Console.WriteLine($"cd {dataApp.StartupLocationDir}; dotnet new console");
-                Process.Run("cmd", new string[] { $"cd {dataApp.StartupLocationDir}", "dotnet new console"}, (s) =>
-                {
-                    //Console.WriteLine(s);
-                } , () =>
-                {
-                    Console.WriteLine("End.");
-                });
+                Process.Run("cmd", new string[] { $"cd {dataApp.StartupLocationDir}", "dotnet new console"});
                 
             })
             {
@@ -85,26 +60,25 @@ namespace Scharp.Compiler
 
                 if (!File.Exists(path_main_cs_))
                     return;
-
-
+                compiler.EventError += (e) =>
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine($"[ERROR]: {e}");
+                };
                 compiler.Open(path_cs_file);
                 compiler.Rebuild();
-          //      Console.WriteLine(compiler.Content);
-                //foreach (var item in Regex.Matches(path_cs_file ))
-                //{
-
-                //}
-
-
-
-                Console.WriteLine(path_main_cs_);
-
-
-
-
-
-
-
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine(compiler.Content);
+                FileInfo fi = new FileInfo(path_cs_file);
+                compiler.Save(Path.Combine(dataApp.StartupLocationDir, "Program.cs"));
+                Process.Run("cmd", new string[] { $"cd {dataApp.StartupLocationDir}", "dotnet build " }, (s) =>
+                {
+                    Console.WriteLine(s);
+                });
+                Process.Run("cmd", new string[] { $"cd {dataApp.StartupLocationDir}", "dotnet run " }, (s) =>
+                {
+                    Console.WriteLine(s);
+                });
             })
             {
                 IsRegex = true,
@@ -112,17 +86,20 @@ namespace Scharp.Compiler
                 
             });
 
-
-            consoleCommand.RunCommand($"run \"{@"C:\Users\Maks\Desktop\main.cs"}\"");
+            consoleCommand.Add(new Command((o) =>
+            {
+                Console.WriteLine($"Commands");
+                foreach (var item in consoleCommand)
+                {
+                    Console.WriteLine($"  {item.command}");
+                }
+                 
+            })
+            {
+                command = "/help",
+            });
 
             consoleCommand.Initialize();
-
-
-
-
-
-
-            
         }
     }
 }

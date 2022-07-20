@@ -49,6 +49,9 @@
     <Compile Include="Model\Console\Command.cs" />
     <Compile Include="Model\Console\ConsoleCommand.cs" />
     <Compile Include="Model\Process.cs" />
+    <Compile Include="Model\WebClient\WebClient.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
