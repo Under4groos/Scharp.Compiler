@@ -14,6 +14,7 @@ namespace Scharp.Compiler.Model.WebClient
             {
                 { "user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 1.0.3705;)" },
                 { "Content-Type","application/x-www-form-urlencoded" },
+                { "Accept", "text/html,application/xhtml+xml,application/xml;q=0.9, ..." },
 
             };
         }

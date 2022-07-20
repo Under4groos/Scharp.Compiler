@@ -14,21 +14,16 @@ using Process = Scharp.Compiler.Model.Process;
  
 namespace Scharp.Compiler
 {
-    
     internal class Program
     {
         static ConsoleCommand consoleCommand = new ConsoleCommand();
         static DataApp dataApp = new DataApp();
         static Model.Compiler.Compiler compiler = new Model.Compiler.Compiler();
         static void Main(string[] args)
-        {
-            
+        {     
             dataApp.Create();
-
-
             consoleCommand.Add(new Command((o) => 
             {
-                
                 Process.Run("cmd", "dotnet --list-sdks", (s) =>
                 {
                     Console.WriteLine(s);
